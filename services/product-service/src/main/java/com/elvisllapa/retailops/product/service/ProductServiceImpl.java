@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
                 ProductStatus.ACTIVE
         );
 
-        Product savedProduct = productRepository.save(product);
+        Product savedProduct = productRepository.saveAndFlush(product);
         return productMapper.toResponse(savedProduct);
     }
 
@@ -158,7 +158,7 @@ public class ProductServiceImpl implements ProductService {
         product.setBrand(request.brand().trim());
         product.setCategory(request.category().trim());
 
-        Product updatedProduct = productRepository.save(product);
+        Product updatedProduct = productRepository.saveAndFlush(product);
         return productMapper.toResponse(updatedProduct);
     }
 
@@ -170,7 +170,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = findProductById(id);
         product.setStatus(status);
 
-        Product updatedProduct = productRepository.save(product);
+        Product updatedProduct = productRepository.saveAndFlush(product);
         return productMapper.toResponse(updatedProduct);
     }
 
@@ -178,7 +178,7 @@ public class ProductServiceImpl implements ProductService {
     public void discontinueProduct(UUID id) {
         Product product = findProductById(id);
         product.setStatus(ProductStatus.DISCONTINUED);
-        productRepository.save(product);
+        productRepository.saveAndFlush(product);
     }
 
     private Product findProductById(UUID id) {
