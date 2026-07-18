@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: product-service
+
+  datasource:
+    url: ${PRODUCT_DB_URL:jdbc:postgresql://localhost:5433/product_db}
+    username: ${PRODUCT_DB_USERNAME:retailops}
+    password: ${PRODUCT_DB_PASSWORD:retailops_local_password}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  flyway:
+    enabled: true
+
+server:
+  port: 8081
