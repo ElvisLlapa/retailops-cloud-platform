@@ -104,6 +104,7 @@ public class InventoryServiceImpl implements InventoryService {
         AdjustInventoryRequest request
     ) {
         Inventory inventory = findInventory(id);
+        validateInventoryIsActive(inventory);
         int newQuantity = inventory.getQuantity() + request.adjustment();
 
         if (newQuantity < 0) {
@@ -129,6 +130,7 @@ public class InventoryServiceImpl implements InventoryService {
         StockQuantityRequest request
     ) {
         Inventory inventory = findInventory(id);
+        validateInventoryIsActive(inventory);
         int availableQuantity =
             inventory.getQuantity() - inventory.getReservedQuantity();
 
@@ -153,6 +155,7 @@ public class InventoryServiceImpl implements InventoryService {
         StockQuantityRequest request
     ) {
         Inventory inventory = findInventory(id);
+        validateInventoryIsActive(inventory);
 
         if (request.quantity() > inventory.getReservedQuantity()) {
             throw new InvalidInventoryOperationException(
@@ -179,6 +182,14 @@ public class InventoryServiceImpl implements InventoryService {
             .orElseThrow(() -> new ResourceNotFoundException(
                 "Inventory not found with ID: " + id
             ));
+    }
+
+    private void validateInventoryIsActive(Inventory inventory) {
+        if (inventory.getStatus() == InventoryStatus.DISCONTINUED) {
+            throw new InvalidInventoryOperationException(
+                "Cannot modify discontinued inventory"
+            );
+        }
     }
 
     private InventoryResponse toResponse(Inventory inventory) {
