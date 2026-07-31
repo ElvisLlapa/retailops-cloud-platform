@@ -63,7 +63,7 @@ public class InventoryServiceImpl implements InventoryService {
         inventory.setStoreId(request.storeId());
         inventory.setQuantity(request.quantity());
         inventory.setReservedQuantity(request.reservedQuantity());
-        inventory.setStatus(InventoryStatus.ACTIVE);
+        inventory.setStatus(InventoryStatus.IN_STOCK);
 
         return toResponse(inventoryRepository.save(inventory));
     }
@@ -170,7 +170,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public void deleteInventory(UUID id) {
         Inventory inventory = findInventory(id);
-        inventory.setStatus(InventoryStatus.INACTIVE);
+        inventory.setStatus(InventoryStatus.DISCONTINUED);
         inventoryRepository.save(inventory);
     }
 
